@@ -6,9 +6,12 @@ import (
 	"net/http"
 )     
 
+// FRESH---command line tool used for watching real time changes on servers without restarting  it 
+//  go install github.com/zzwx/fresh@latest--  to project folder 01-intro then create go.mod file...later fresh -g to generate .fresh.yaml which any file change in folder..tmp folder creates if there is an error..otherwise run server through  fresh cmd 
+
+
 // Argument in URL --  https://localhost:3000/error?name=alex&age=26   
 
-   
 //  Handler  functions    
 
 //  Handler 1--  homepage 
@@ -55,8 +58,7 @@ func Greeting(rw http.ResponseWriter,  r *http.Request)  {
   //FprintF--accepts three arguments--1.specified standard i or o 2.format string--contains strings ,   3.a--interface--specified constant variables used in the code 
 //   it returns the number of bytes written and any write  error encountered 
 
-	fmt.Fprintf(rw, "Hello %s, your age is %s ", name, age )   
-	      
+	fmt.Fprintf(rw, "Hello %s, your age is %s ", name, age )   	      
 }         
           
 func main() {           
@@ -77,14 +79,31 @@ func main() {
 	//   ROUTE 3 -- Error  
     //   http.HandleFunc("/error", Error)          
 	//   ROUTE 4 --  Greeting URL  
-	// http.HandleFunc("/greeting", Greeting)
+	// http.HandleFunc("/greeting", Greeting)  
 
-    //creating  Server      
+    //creating  Server        
+	// server shows address and the mux object (http routes)      
+
+	server := &http.Server{ 
+     Addr: "localhost:3000",  
+	 Handler: mux,
+        
+	}
+
 	fmt.Println("The server is running on port 3000")
 	fmt.Println("Run Server: http://localhost:3000/")   
-	// Before inputing mux as last arg--it returns page not found  
+	// Before inputing mux as last arg--it returns page not found 
+    // log.Fatal(http.ListenAndServe("localhost:3000", mux))    
+                  
+	// Concise way of writting server         
 
-    log.Fatal(http.ListenAndServe("localhost:3000", mux))              
+	log.Fatal(server.ListenAndServe())        
+	         
 
-}                                                       
-                                     
+
+
+}                                                             
+                                                           
+
+
+        
